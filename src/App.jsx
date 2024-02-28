@@ -1,7 +1,7 @@
 import { AVAILABLE_PLACES } from "./data";
 import Places from "./components/Places";
 import Modal from "./components/Modal";
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import DeleteConfirmation from "./components/DeleteConfirmation";
 import { sortPlacesByDistance } from "./loc";
 
@@ -12,7 +12,6 @@ const storedPlaces = storedPlacesId.map((id) =>
 );
 
 function App() {
-  const modal = useRef();
   const selectedToBeDeletedPlaceId = useRef();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [sortedPlaces, setSortedPlaces] = useState([]);
@@ -52,13 +51,11 @@ function App() {
   }
 
   function handleOpenModal(id) {
-    modal.current.open();
     setIsOpenModal(true);
     selectedToBeDeletedPlaceId.current = id;
   }
 
   function handleCloseModal() {
-    modal.current.close();
     setIsOpenModal(false);
   }
 
@@ -69,7 +66,6 @@ function App() {
           (place) => place.id !== selectedToBeDeletedPlaceId.current
         );
       });
-      modal.current.close();
       setIsOpenModal(false);
 
       const storedPlacesId =
@@ -89,7 +85,7 @@ function App() {
 
   return (
     <>
-      <Modal isOpenModal={isOpenModal} ref={modal} onClose={handleCloseModal}>
+      <Modal isOpenModal={isOpenModal} onClose={handleCloseModal}>
         <DeleteConfirmation
           onClose={handleCloseModal}
           onConfirm={handleDeletePickedPlace}
