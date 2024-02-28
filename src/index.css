@@ -1,0 +1,225 @@
+/* 
+
+
+
+
+
+
+} */
+
+ @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@10..48,400;10..48,700&family=Raleway:wght@400;700&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  line-height: 1.5;
+  color: #defaf8;
+}
+
+body {
+  padding: 2rem;
+  background: linear-gradient(180deg, #1f1c2c 0%, #1f1c2c 100%);
+  min-height: 100rem; 
+}
+
+header {
+  text-align: center;
+}
+
+header img {
+  width: 5rem;
+  height: 5rem;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.4));
+}
+
+header h1 {
+  font-size: 3rem;
+  letter-spacing: 1rem;
+  text-transform: uppercase;
+}
+
+header p {
+  max-width: 25rem;
+  margin: 0 auto;
+  color: #9eb5b4;
+  font-size: 1.15rem;
+}
+
+.places-category {
+  max-width: 85rem;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 2px solid #0d373e;
+  border-radius: 8px;
+}
+
+.places-category h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.5rem;
+  color: #8feeff;
+  text-align: center;
+}
+
+.fallback-text {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.places {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  grid-gap: 2rem;
+  margin: 2rem 0;
+}
+
+.place {
+  position: relative;
+  background-color: #1f1c2c;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  animation: slide-up-fade-in 0.3s ease-out forwards;
+}
+
+.place button {
+  background: transparent;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.place:nth-of-type(odd) button:hover,
+.place:nth-of-type(odd) button:focus {
+  box-shadow: 0 0 8px 4px rgba(255, 217, 0, 0.6);
+  border-radius: 8px;
+  transform: rotate(5deg);
+}
+
+.place:nth-of-type(even) button:hover,
+.place:nth-of-type(even) button:focus {
+  box-shadow: 0 0 8px 4px rgba(255, 217, 0, 0.6);
+  border-radius: 8px;
+  transform: rotate(-5deg);
+}
+
+.place img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.place img:focus {
+  outline: none;
+}
+
+.place h3 {
+  position: absolute;
+  bottom:0;
+  right: 1rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  font-family: 'Raleway', sans-serif;
+  background-color: #feee86;
+  padding: 0.15rem 0.35rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.modal {
+  margin: auto;
+  min-width: 30rem;;
+  z-index: 2;
+  background: #d5c7bc;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  animation: slide-down-fade-in 0.3s ease-out forwards;
+}
+
+.modal::backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.confirmation-container {
+  padding: 1rem;
+}
+
+.confirmation-container h2 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.5rem;
+  color: #5d0909;
+}
+
+.confirmation-container p {
+  margin: 0 auto;
+  font-size: 1.15rem;
+  max-width: 21rem;
+  color: #804242;
+}
+
+.confirmation-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.btn {
+  font-family: 'Raleway', sans-serif;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.btn-text {
+  background-color: transparent;
+  color: #5d0909;
+}
+
+.btn-full {
+  font-weight: bold;
+  padding: 0.5rem 1.5rem;
+  background-color: #5d0909;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+.btn-full:hover,
+.btn-full:focus {
+  background-color: #3e0505;
+}
+@keyframes slide-down-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-up-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
