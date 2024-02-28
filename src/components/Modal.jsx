@@ -2,8 +2,11 @@ import { useImperativeHandle } from "react";
 import { forwardRef, useRef } from "react";
 import { createPortal } from "react-dom";
 
-const PlaceModal = forwardRef(function PlaceModal({ children, onClose }, ref) {
+
+const PlaceModal = forwardRef(function PlaceModal({ children, onClose, isOpenModal }, ref) {
   const dialog = useRef();
+
+
 
   useImperativeHandle(ref, () => {
     return {
@@ -17,7 +20,7 @@ const PlaceModal = forwardRef(function PlaceModal({ children, onClose }, ref) {
   });
   return createPortal(
     <dialog ref={dialog} className="modal" onClose={onClose}>
-      {children}
+      {isOpenModal ? children : null}
     </dialog>,
     document.getElementById("modal")
   );

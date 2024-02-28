@@ -1,8 +1,9 @@
 import { AVAILABLE_PLACES } from "./data";
 import Places from "./components/Places";
 import Modal from "./components/Modal";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import DeleteConfirmation from "./components/DeleteConfirmation";
+import { sortPlacesByDistance } from "./loc";
 
 const storedPlacesId =
   JSON.parse(localStorage.getItem("stored-places-ids")) || [];
@@ -13,8 +14,21 @@ const storedPlaces = storedPlacesId.map((id) =>
 function App() {
   const modal = useRef();
   const selectedToBeDeletedPlaceId = useRef();
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [sortedPlaces, setSortedPlaces] = useState([]);
   const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlaces = sortPlacesByDistance(
+        AVAILABLE_PLACES,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+
+      setSortedPlaces(sortedPlaces);
+    });
+  }, []);
 
   function handleAddPickedPlaces(id) {
     setPickedPlaces((prevPickedPlaces) => {
@@ -39,35 +53,43 @@ function App() {
 
   function handleOpenModal(id) {
     modal.current.open();
+    setIsOpenModal(true);
     selectedToBeDeletedPlaceId.current = id;
   }
 
   function handleCloseModal() {
     modal.current.close();
+    setIsOpenModal(false);
   }
 
-  function handleDeletePickedPlace() {
-    setPickedPlaces((prevPickedPlaces) => {
-      return prevPickedPlaces.filter(
-        (place) => place.id !== selectedToBeDeletedPlaceId.current
+  const handleDeletePickedPlace = useCallback(
+    function handleDeletePickedPlace() {
+      setPickedPlaces((prevPickedPlaces) => {
+        return prevPickedPlaces.filter(
+          (place) => place.id !== selectedToBeDeletedPlaceId.current
+        );
+      });
+      modal.current.close();
+      setIsOpenModal(false);
+
+      const storedPlacesId =
+        JSON.parse(localStorage.getItem("stored-places-ids")) || [];
+
+      localStorage.setItem(
+        "stored-places-ids",
+        JSON.stringify(
+          storedPlacesId.filter(
+            (id) => id !== selectedToBeDeletedPlaceId.current
+          )
+        )
       );
-    });
-    modal.current.close();
-
-    const storedPlacesId =
-      JSON.parse(localStorage.getItem("stored-places-ids")) || [];
-
-    localStorage.setItem(
-      "stored-places-ids",
-      JSON.stringify(
-        storedPlacesId.filter((id) => id !== selectedToBeDeletedPlaceId.current)
-      )
-    );
-  }
+    },
+    []
+  );
 
   return (
     <>
-      <Modal ref={modal} onClose={handleCloseModal}>
+      <Modal isOpenModal={isOpenModal} ref={modal} onClose={handleCloseModal}>
         <DeleteConfirmation
           onClose={handleCloseModal}
           onConfirm={handleDeletePickedPlace}
@@ -81,7 +103,7 @@ function App() {
       />
       <Places
         title="Available Places"
-        places={AVAILABLE_PLACES}
+        places={sortedPlaces}
         onSelect={handleAddPickedPlaces}
         fallbackText="Sorting places by distance"
       />
